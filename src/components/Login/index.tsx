@@ -1,26 +1,22 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import logoImg from '../../assets/images/logo.svg';
 import googleIconImg from '../../assets/images/google-icon.svg';
 import Button from '../Button';
 
 import { Container } from './styles';
+import { useAuth } from '../../contexts/AuthContext';
 import { PATHS } from '../../routes/paths';
-import { auth } from '../../services/firebase';
 
 const Login: React.FC = () => {
+  const { signIn } = useAuth();
   const history = useHistory();
 
-  const handleCreateRoom = useCallback(() => {
-    const provider = new GoogleAuthProvider();
-
-    signInWithPopup(auth, provider).then(result => {
-      console.log(result);
-
+  const handleCreateRoom = () => {
+    signIn().then(() => {
       history.push(PATHS.rooms.new);
     });
-  }, [history]);
+  };
 
   return (
     <Container>
