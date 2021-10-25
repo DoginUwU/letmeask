@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from 'react';
-import { ref, push, get, onValue } from 'firebase/database';
+/* eslint-disable consistent-return */
+import { createContext, useCallback, useEffect, useState } from 'react';
+import { ref, push, get, onValue, update } from 'firebase/database';
 import { database } from '../services/firebase';
 import useAuth from '../hooks/useAuth';
 import { QuestionProvider } from './QuestionContext';
@@ -8,6 +9,7 @@ import { Room } from '../@types/room';
 interface RoomState {
   createRoom(roomName: string): Promise<string>;
   joinRoom(roomCode: string): Promise<string>;
+  deleteRoom(): Promise<void>;
   roomCode: string;
   room: Room;
 }
@@ -38,6 +40,18 @@ const RoomProvider: React.FC = ({ children }) => {
     return code;
   };
 
+  const deleteRoom = useCallback(async () => {
+    const roomRef = ref(database, `rooms/${roomCode}`);
+    try {
+      await update(roomRef, {
+        endedAt: new Date(),
+        deleted: true,
+      });
+    } catch (error) {
+      throw new Error('Erro ao deletar sala.');
+    }
+  }, [roomCode]);
+
   const joinRoom = async (code: string) => {
     if (!code.trim().length) throw new Error('Código da sala é necessário.');
 
@@ -46,6 +60,8 @@ const RoomProvider: React.FC = ({ children }) => {
     const databaseRoom = await get(roomRef);
 
     if (!databaseRoom.exists()) throw new Error('Sala não existe.');
+
+    if (databaseRoom.val().deleted) throw new Error('Sala foi deletada.');
 
     setRoomCode(code);
 
@@ -56,13 +72,17 @@ const RoomProvider: React.FC = ({ children }) => {
     if (!roomCode) return;
 
     const roomRef = ref(database, `rooms/${roomCode}`);
-    onValue(roomRef, databaseRoom => {
+    const unsubscribe = onValue(roomRef, databaseRoom => {
       setRoom(databaseRoom.val());
     });
+
+    return () => unsubscribe();
   }, [roomCode]);
 
   return (
-    <RoomContext.Provider value={{ createRoom, joinRoom, roomCode, room }}>
+    <RoomContext.Provider
+      value={{ createRoom, deleteRoom, joinRoom, roomCode, room }}
+    >
       <QuestionProvider>{children}</QuestionProvider>
     </RoomContext.Provider>
   );

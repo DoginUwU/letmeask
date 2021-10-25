@@ -14,6 +14,16 @@ const Header = styled.header`
     > img {
       max-height: 45px;
     }
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    button {
+      height: 40px;
+    }
   }
 `;
 

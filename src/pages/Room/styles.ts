@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface LikedButtonProps {
+  liked?: boolean;
+}
+
 const Container = styled.div``;
 
 const Content = styled.main`
@@ -88,4 +92,21 @@ const UserInfo = styled.div`
   }
 `;
 
-export { Container, Content, FormFooter, UserInfo };
+const QuestionList = styled.div`
+  margin-top: 32px;
+`;
+
+const LikedButton = styled.button<LikedButtonProps>`
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+
+  color: ${props => (props.liked ? '#835afd' : '#737380')};
+
+  svg path {
+    stroke: ${props => (props.liked ? '#FFF' : '#737380')};
+    fill: ${props => (props.liked ? '#835afd' : 'transparent')};
+  }
+`;
+
+export { Container, Content, FormFooter, UserInfo, QuestionList, LikedButton };

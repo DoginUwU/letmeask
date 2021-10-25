@@ -4,13 +4,22 @@ import Button from '../../components/Button';
 import Header from '../../components/Header';
 import useAuth from '../../hooks/useAuth';
 import useQuestion from '../../hooks/useQuestion';
-import { Container, Content, FormFooter, UserInfo } from './styles';
+import {
+  Container,
+  Content,
+  FormFooter,
+  LikedButton,
+  QuestionList,
+  UserInfo,
+} from './styles';
 import useRoom from '../../hooks/useRoom';
+import Question from '../../components/Question';
+import LikeIcon from '../../components/LikeIcon';
 
 const Room: React.FC = () => {
   const { user } = useAuth();
   const { room } = useRoom();
-  const { createQuestion, questions } = useQuestion();
+  const { createQuestion, addLike, removeLike, questions } = useQuestion();
   const [newQuestion, setNewQuestion] = useState('');
 
   const handleSendQuestion = useCallback(
@@ -20,12 +29,25 @@ const Room: React.FC = () => {
       try {
         await createQuestion(newQuestion);
         setNewQuestion('');
+        toast.success('Pergunta enviada com sucesso!');
       } catch (err) {
         if (err instanceof Error) toast.error(err.message);
       }
     },
     [createQuestion, newQuestion],
   );
+
+  const handleLikeQuestion = async (questionId: string, likeId?: string) => {
+    try {
+      if (likeId) {
+        await removeLike(questionId, likeId);
+      } else {
+        await addLike(questionId);
+      }
+    } catch (err) {
+      if (err instanceof Error) toast.error(err.message);
+    }
+  };
 
   const changeNewQuestion = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -51,22 +73,40 @@ const Room: React.FC = () => {
           />
 
           <FormFooter>
-            {user ? (
+            {user.id ? (
               <UserInfo>
                 <img src={user.avatar} alt={user.name} />
                 <span>{user.name}</span>
               </UserInfo>
             ) : (
               <span>
-                Para enviar uma pergunta,
+                Para enviar uma pergunta,&nbsp;
                 <button type="button">faça seu login</button>
               </span>
             )}
-            <Button type="submit" disabled={!user}>
+            <Button type="submit" disabled={!user.id}>
               Enviar pergunta
             </Button>
           </FormFooter>
         </form>
+
+        <QuestionList>
+          {questions.map(question => (
+            <Question key={question.content} question={question}>
+              <LikedButton
+                type="button"
+                aria-label="Marcar como gostei"
+                onClick={() =>
+                  handleLikeQuestion(question.id ?? '', question.likeId)
+                }
+                liked={!!question.likeId}
+              >
+                {question.likeCount > 0 && <span>{question.likeCount}</span>}
+                <LikeIcon />
+              </LikedButton>
+            </Question>
+          ))}
+        </QuestionList>
       </Content>
     </Container>
   );

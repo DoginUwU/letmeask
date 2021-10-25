@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { ref, push } from 'firebase/database';
+import { ref, push, remove } from 'firebase/database';
 import useAuth from '../hooks/useAuth';
 import { database } from '../services/firebase';
 import useRoom from '../hooks/useRoom';
@@ -7,6 +7,9 @@ import { Question } from '../@types/question';
 
 interface QuestionState {
   createQuestion(question: string): Promise<void>;
+  removeQuestion(questionId: string): Promise<void>;
+  addLike(questionId: string): Promise<void>;
+  removeLike(questionId: string, likeId: string): Promise<void>;
   questions: Question[];
 }
 
@@ -19,7 +22,7 @@ const QuestionProvider: React.FC = ({ children }) => {
 
   const createQuestion = async (questionLabel: string) => {
     if (!questionLabel.trim().length) throw new Error('Questão vazia.');
-    if (!user) throw new Error('Não autenticado.');
+    if (!user.id) throw new Error('Não autenticado.');
     if (!roomCode) throw new Error('Não está em uma sala.');
 
     const question = {
@@ -36,6 +39,36 @@ const QuestionProvider: React.FC = ({ children }) => {
     await push(roomRef, question);
   };
 
+  const removeQuestion = async (questionId: string) => {
+    const questionRef = ref(
+      database,
+      `rooms/${roomCode}/questions/${questionId}`,
+    );
+    await remove(questionRef);
+  };
+
+  const addLike = async (questionId: string) => {
+    if (!user.id) throw new Error('Não autenticado.');
+
+    const roomRef = ref(
+      database,
+      `rooms/${roomCode}/questions/${questionId}/likes`,
+    );
+    await push(roomRef, {
+      authorId: user.id,
+    });
+  };
+
+  const removeLike = async (questionId: string, likeId: string) => {
+    if (!user.id) throw new Error('Não autenticado.');
+
+    const roomRef = ref(
+      database,
+      `rooms/${roomCode}/questions/${questionId}/likes/${likeId}`,
+    );
+    await remove(roomRef);
+  };
+
   useEffect(() => {
     const firebaseQuestions = room.questions ?? {};
 
@@ -44,15 +77,21 @@ const QuestionProvider: React.FC = ({ children }) => {
         return {
           id: key,
           ...value,
+          likeCount: Object.values(value.likes ?? {}).length,
+          likeId: Object.entries(value.likes ?? {}).find(
+            ([, like]) => like.authorId === user.id,
+          )?.[0],
         } as Question;
       },
     );
 
     setQuestions(parsedQuestions);
-  }, [room]);
+  }, [room, user.id]);
 
   return (
-    <QuestionContext.Provider value={{ createQuestion, questions }}>
+    <QuestionContext.Provider
+      value={{ createQuestion, removeQuestion, addLike, removeLike, questions }}
+    >
       {children}
     </QuestionContext.Provider>
   );

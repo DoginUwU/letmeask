@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useHistory, useParams } from 'react-router-dom';
 import logoImg from '../../assets/images/logo.svg';
 import useRoom from '../../hooks/useRoom';
+import Button from '../Button';
 import RoomCode from '../RoomCode';
 import { Header as HeaderComponent } from './styles';
 
@@ -10,18 +12,38 @@ interface RouteParams {
 }
 
 const Header: React.FC = () => {
-  const { roomCode, joinRoom } = useRoom();
+  const history = useHistory();
+  const { roomCode, joinRoom, deleteRoom } = useRoom();
   const { id } = useParams<RouteParams>();
 
+  const handleEndRoom = async () => {
+    try {
+      await deleteRoom();
+
+      history.push('/');
+    } catch (err) {
+      if (err instanceof Error) toast.error(err.message);
+    }
+  };
+
   useEffect(() => {
-    if (id) joinRoom(id);
-  }, [id, joinRoom]);
+    if (id)
+      joinRoom(id).catch(err => {
+        if (err instanceof Error) toast.error(err.message);
+        history.push('/');
+      });
+  }, [id, joinRoom, history]);
 
   return (
     <HeaderComponent>
       <div className="content">
         <img src={logoImg} alt="letmeask" />
-        <RoomCode code={roomCode} />
+        <div>
+          <RoomCode code={roomCode} />
+          <Button isOutlined onClick={handleEndRoom}>
+            Encerrar sala
+          </Button>
+        </div>
       </div>
     </HeaderComponent>
   );

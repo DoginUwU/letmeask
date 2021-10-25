@@ -1,4 +1,5 @@
 import { Switch, Route } from 'react-router-dom';
+import AdminRoom from '../pages/AdminRoom';
 import Home from '../pages/Home';
 import Room from '../pages/Room';
 import { PATHS } from './paths';
@@ -10,6 +11,7 @@ const Router: React.FC = () => (
       <Home isCreateRoom />
     </Route>
     <Route path={PATHS.rooms.root} component={Room} />
+    <Route path={PATHS.rooms.rootAdmin} component={AdminRoom} />
   </Switch>
 );
 
