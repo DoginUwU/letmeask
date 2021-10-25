@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import logoImg from '../../assets/images/logo.svg';
 import googleIconImg from '../../assets/images/google-icon.svg';
 import Button from '../Button';
@@ -13,9 +14,14 @@ const Login: React.FC = () => {
   const history = useHistory();
 
   const handleCreateRoom = () => {
-    signIn().then(() => {
-      history.push(PATHS.rooms.new);
-    });
+    signIn()
+      .then(() => {
+        toast.success('Login realizado com sucesso!');
+        history.push(PATHS.rooms.new);
+      })
+      .catch(err => {
+        if (err instanceof Error) toast.error(err.message);
+      });
   };
 
   return (

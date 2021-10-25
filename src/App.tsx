@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { Router } from './routes/router';
@@ -7,6 +8,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
+      <Toaster />
       <AuthProvider>
         <Router />
       </AuthProvider>

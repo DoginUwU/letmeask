@@ -23,7 +23,7 @@ const AuthProvider: React.FC = ({ children }) => {
     const { uid, displayName, photoURL } = firebaseUser;
 
     if (!displayName || !photoURL)
-      throw new Error('User information is missing.');
+      throw new Error('Informações de usuário faltando.');
 
     setUser({
       id: uid,
@@ -40,7 +40,7 @@ const AuthProvider: React.FC = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       handleUser(result.user);
     } catch (error) {
-      throw new Error('User not authenticated.');
+      throw new Error('Usuário não autenticado.');
     }
   };
 
