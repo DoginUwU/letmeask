@@ -23,6 +23,7 @@ const Container = styled.div<ContainerProps>`
     props.isHighlighted &&
     css`
       background-color: #dbdcdd;
+      border: 0;
     `};
 
   & + & {
