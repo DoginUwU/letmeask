@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -61,12 +61,5 @@ const AuthProvider: React.FC = ({ children }) => {
   );
 };
 
-const useAuth = (): AuthState => {
-  const context = useContext(AuthContext);
-
-  if (!context) throw new Error('useAuth must be used within an AuthProvider');
-
-  return context;
-};
-
-export { AuthProvider, useAuth };
+export { AuthProvider, AuthContext };
+export type { AuthState };

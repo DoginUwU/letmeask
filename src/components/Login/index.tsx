@@ -5,7 +5,7 @@ import googleIconImg from '../../assets/images/google-icon.svg';
 import Button from '../Button';
 
 import { Container } from './styles';
-import { useAuth } from '../../contexts/AuthContext';
+import useAuth from '../../hooks/useAuth';
 import { PATHS } from '../../routes/paths';
 
 const Login: React.FC = () => {
