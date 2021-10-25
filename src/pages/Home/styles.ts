@@ -9,7 +9,7 @@ const Container = styled.div`
 const AsideContainer = styled.aside`
   flex: 7;
 
-  background: #835afd;
+  background: #06f;
   color: #fff;
 
   display: flex;

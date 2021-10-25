@@ -65,7 +65,7 @@ const FormFooter = styled.div`
     button {
       background: transparent;
       border: 0;
-      color: #835afd;
+      color: #06f;
       text-decoration: underline;
       font-size: 14px;
       font-weight: 500;
@@ -101,11 +101,11 @@ const LikedButton = styled.button<LikedButtonProps>`
   align-items: flex-end;
   gap: 8px;
 
-  color: ${props => (props.liked ? '#835afd' : '#737380')};
+  color: ${props => (props.liked ? '#06f' : '#737380')};
 
   svg path {
     stroke: ${props => (props.liked ? '#FFF' : '#737380')};
-    fill: ${props => (props.liked ? '#835afd' : 'transparent')};
+    fill: ${props => (props.liked ? '#06f' : 'transparent')};
   }
 `;
 

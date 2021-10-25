@@ -6,18 +6,18 @@ const Button = styled.button`
   overflow: hidden;
 
   background-color: #fff;
-  border: 1px solid #835afd;
+  border: 1px solid #06f;
   cursor: pointer;
   display: flex;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: #835afd;
+    background-color: #06f;
     color: #fff;
   }
 
   div {
-    background: #835afd;
+    background: #06f;
     padding: 0 12px;
     display: flex;
     justify-content: center;
