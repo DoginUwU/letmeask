@@ -1,17 +1,23 @@
-import { createContext } from 'react';
-import { ref, push, get } from 'firebase/database';
+import { createContext, useEffect, useState } from 'react';
+import { ref, push, get, onValue } from 'firebase/database';
 import { database } from '../services/firebase';
 import useAuth from '../hooks/useAuth';
+import { QuestionProvider } from './QuestionContext';
+import { Room } from '../@types/room';
 
 interface RoomState {
   createRoom(roomName: string): Promise<string>;
   joinRoom(roomCode: string): Promise<string>;
+  roomCode: string;
+  room: Room;
 }
 
 const RoomContext = createContext<RoomState>({} as RoomState);
 
 const RoomProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
+  const [roomCode, setRoomCode] = useState('');
+  const [room, setRoom] = useState<Room>({} as Room);
 
   const createRoom = async (roomName: string) => {
     if (!roomName.trim().length) throw new Error('Nome da sala é necessário.');
@@ -23,27 +29,41 @@ const RoomProvider: React.FC = ({ children }) => {
       authorID: user.id,
     });
 
-    if (!firebaseRoom.key) throw new Error('Erro ao criar sala.');
+    const code = firebaseRoom.key;
 
-    return firebaseRoom.key;
+    if (!code) throw new Error('Erro ao criar sala.');
+
+    setRoomCode(code);
+
+    return code;
   };
 
-  const joinRoom = async (roomCode: string) => {
-    if (!roomCode.trim().length)
-      throw new Error('Código da sala é necessário.');
+  const joinRoom = async (code: string) => {
+    if (!code.trim().length) throw new Error('Código da sala é necessário.');
+
+    const roomRef = ref(database, `rooms/${code}`);
+
+    const databaseRoom = await get(roomRef);
+
+    if (!databaseRoom.exists()) throw new Error('Sala não existe.');
+
+    setRoomCode(code);
+
+    return code;
+  };
+
+  useEffect(() => {
+    if (!roomCode) return;
 
     const roomRef = ref(database, `rooms/${roomCode}`);
-
-    const room = await get(roomRef);
-
-    if (!room.exists()) throw new Error('Sala não existe.');
-
-    return roomCode;
-  };
+    onValue(roomRef, databaseRoom => {
+      setRoom(databaseRoom.val());
+    });
+  }, [roomCode]);
 
   return (
-    <RoomContext.Provider value={{ createRoom, joinRoom }}>
-      {children}
+    <RoomContext.Provider value={{ createRoom, joinRoom, roomCode, room }}>
+      <QuestionProvider>{children}</QuestionProvider>
     </RoomContext.Provider>
   );
 };

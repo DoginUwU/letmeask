@@ -5,6 +5,7 @@ const Container = styled.div``;
 const Content = styled.main`
   max-width: 800px;
   margin: 0 auto;
+  padding: 40px 20px;
 
   .room-title {
     margin: 32px 0 24px;
@@ -52,7 +53,7 @@ const FormFooter = styled.div`
   align-items: center;
   margin-top: 32px;
 
-  span {
+  > span {
     font-size: 14px;
     color: #737380;
     font-weight: 500;
@@ -69,4 +70,22 @@ const FormFooter = styled.div`
   }
 `;
 
-export { Container, Content, FormFooter };
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  span {
+    margin-left: 8px;
+    color: #29292e;
+    font-weight: 500;
+    font-size: 14px;
+  }
+`;
+
+export { Container, Content, FormFooter, UserInfo };

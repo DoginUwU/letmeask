@@ -8,8 +8,13 @@ const Button = styled.button`
   background-color: #fff;
   border: 1px solid #835afd;
   cursor: pointer;
-
   display: flex;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #835afd;
+    color: #fff;
+  }
 
   div {
     background: #835afd;
@@ -28,6 +33,9 @@ const Button = styled.button`
     width: 230px;
     font-size: 14px;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 
