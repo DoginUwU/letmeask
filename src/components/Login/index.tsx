@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import logoImg from '../../assets/images/logo.svg';
@@ -8,10 +8,13 @@ import Button from '../Button';
 import { Container } from './styles';
 import useAuth from '../../hooks/useAuth';
 import { PATHS } from '../../routes/paths';
+import useRoom from '../../hooks/useRoom';
 
 const Login: React.FC = () => {
-  const { signIn } = useAuth();
   const history = useHistory();
+  const { signIn } = useAuth();
+  const { joinRoom } = useRoom();
+  const [roomCode, setRoomCode] = React.useState('');
 
   const handleCreateRoom = () => {
     signIn()
@@ -22,6 +25,21 @@ const Login: React.FC = () => {
       .catch(err => {
         if (err instanceof Error) toast.error(err.message);
       });
+  };
+
+  const handleJoinRoom = async (event: FormEvent) => {
+    event.preventDefault();
+
+    try {
+      const code = await joinRoom(roomCode);
+      history.push(PATHS.rooms.root.replace(':id', code));
+    } catch (err) {
+      if (err instanceof Error) toast.error(err.message);
+    }
+  };
+
+  const hnadleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomCode(event.target.value);
   };
 
   return (
@@ -35,8 +53,13 @@ const Login: React.FC = () => {
         Crie sua sala com o Google
       </Button>
       <div className="separator">ou entre em uma sala</div>
-      <form>
-        <input type="text" placeholder="Digite o código da sala" />
+      <form onSubmit={handleJoinRoom}>
+        <input
+          type="text"
+          placeholder="Digite o código da sala"
+          onChange={hnadleCodeChange}
+          value={roomCode}
+        />
         <Button type="submit">Entrar na sala</Button>
       </form>
       <div />

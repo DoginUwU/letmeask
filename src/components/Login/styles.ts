@@ -58,6 +58,7 @@ const Container = styled.div`
 
   .create-room {
     background-color: #ea4335;
+    margin-top: 64px;
   }
 `;
 

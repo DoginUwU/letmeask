@@ -1,5 +1,6 @@
 import { Switch, Route } from 'react-router-dom';
 import Home from '../pages/Home';
+import Room from '../pages/Room';
 import { PATHS } from './paths';
 
 const Router: React.FC = () => (
@@ -8,6 +9,7 @@ const Router: React.FC = () => (
     <Route path={PATHS.rooms.new}>
       <Home isCreateRoom />
     </Route>
+    <Route path={PATHS.rooms.root} component={Room} />
   </Switch>
 );
 
