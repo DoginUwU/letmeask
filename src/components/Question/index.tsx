@@ -12,10 +12,10 @@ const Question: React.FC<QuestionProps> = ({
   question,
   children,
 }: QuestionProps) => {
-  const { content, author } = question;
+  const { content, author, isAnswered, isHighlighted } = question;
 
   return (
-    <Container>
+    <Container isAnswered={isAnswered} isHighlighted={isHighlighted}>
       <p>{content}</p>
       <footer>
         <UserInfo>

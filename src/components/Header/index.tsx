@@ -13,7 +13,7 @@ interface RouteParams {
 
 const Header: React.FC = () => {
   const history = useHistory();
-  const { roomCode, joinRoom, deleteRoom } = useRoom();
+  const { roomCode, joinRoom, deleteRoom, room } = useRoom();
   const { id } = useParams<RouteParams>();
 
   const handleEndRoom = async () => {
@@ -40,9 +40,11 @@ const Header: React.FC = () => {
         <img src={logoImg} alt="letmeask" />
         <div>
           <RoomCode code={roomCode} />
-          <Button isOutlined onClick={handleEndRoom}>
-            Encerrar sala
-          </Button>
+          {room.isOwned && (
+            <Button isOutlined onClick={handleEndRoom}>
+              Encerrar sala
+            </Button>
+          )}
         </div>
       </div>
     </HeaderComponent>

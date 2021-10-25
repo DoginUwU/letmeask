@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { ref, push, remove } from 'firebase/database';
+import { ref, push, remove, update, get } from 'firebase/database';
 import useAuth from '../hooks/useAuth';
 import { database } from '../services/firebase';
 import useRoom from '../hooks/useRoom';
@@ -10,6 +10,8 @@ interface QuestionState {
   removeQuestion(questionId: string): Promise<void>;
   addLike(questionId: string): Promise<void>;
   removeLike(questionId: string, likeId: string): Promise<void>;
+  checkQuestionAsAnswered(questionId: string): Promise<void>;
+  highlightQuestion(questionId: string): Promise<void>;
   questions: Question[];
 }
 
@@ -35,8 +37,8 @@ const QuestionProvider: React.FC = ({ children }) => {
       isAnswered: false,
     } as Question;
 
-    const roomRef = ref(database, `rooms/${roomCode}/questions`);
-    await push(roomRef, question);
+    const questionRef = ref(database, `rooms/${roomCode}/questions`);
+    await push(questionRef, question);
   };
 
   const removeQuestion = async (questionId: string) => {
@@ -50,11 +52,11 @@ const QuestionProvider: React.FC = ({ children }) => {
   const addLike = async (questionId: string) => {
     if (!user.id) throw new Error('Não autenticado.');
 
-    const roomRef = ref(
+    const questionRef = ref(
       database,
       `rooms/${roomCode}/questions/${questionId}/likes`,
     );
-    await push(roomRef, {
+    await push(questionRef, {
       authorId: user.id,
     });
   };
@@ -62,11 +64,37 @@ const QuestionProvider: React.FC = ({ children }) => {
   const removeLike = async (questionId: string, likeId: string) => {
     if (!user.id) throw new Error('Não autenticado.');
 
-    const roomRef = ref(
+    const questionRef = ref(
       database,
       `rooms/${roomCode}/questions/${questionId}/likes/${likeId}`,
     );
-    await remove(roomRef);
+    await remove(questionRef);
+  };
+
+  const checkQuestionAsAnswered = async (questionId: string) => {
+    if (!user.id) throw new Error('Não autenticado.');
+
+    const questionRef = ref(
+      database,
+      `rooms/${roomCode}/questions/${questionId}`,
+    );
+    const databaseQuestion = await get(questionRef);
+    await update(questionRef, {
+      isAnswered: !databaseQuestion.val().isAnswered,
+    });
+  };
+
+  const highlightQuestion = async (questionId: string) => {
+    if (!user.id) throw new Error('Não autenticado.');
+
+    const questionRef = ref(
+      database,
+      `rooms/${roomCode}/questions/${questionId}`,
+    );
+    const databaseQuestion = await get(questionRef);
+    await update(questionRef, {
+      isHighlighted: !databaseQuestion.val().isHighlighted,
+    });
   };
 
   useEffect(() => {
@@ -75,8 +103,8 @@ const QuestionProvider: React.FC = ({ children }) => {
     const parsedQuestions = Object.entries(firebaseQuestions).map(
       ([key, value]) => {
         return {
-          id: key,
           ...value,
+          id: key,
           likeCount: Object.values(value.likes ?? {}).length,
           likeId: Object.entries(value.likes ?? {}).find(
             ([, like]) => like.authorId === user.id,
@@ -90,7 +118,15 @@ const QuestionProvider: React.FC = ({ children }) => {
 
   return (
     <QuestionContext.Provider
-      value={{ createQuestion, removeQuestion, addLike, removeLike, questions }}
+      value={{
+        createQuestion,
+        removeQuestion,
+        addLike,
+        removeLike,
+        checkQuestionAsAnswered,
+        highlightQuestion,
+        questions,
+      }}
     >
       {children}
     </QuestionContext.Provider>

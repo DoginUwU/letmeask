@@ -1,10 +1,29 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { transparentize } from 'polished';
 
-const Container = styled.div`
+interface ContainerProps {
+  isAnswered?: boolean;
+  isHighlighted?: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   background-color: #fefefe;
   border-radius: 8px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
   padding: 24px;
+
+  ${props =>
+    props.isAnswered &&
+    css`
+      background-color: ${transparentize(0.9, '#06f')};
+      border: 1px solid #06f;
+    `};
+
+  ${props =>
+    props.isHighlighted &&
+    css`
+      background-color: #dbdcdd;
+    `};
 
   & + & {
     margin-top: 8px;
@@ -19,6 +38,11 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 24px;
+
+    > div {
+      display: flex;
+      gap: 16px;
+    }
 
     button {
       border: 0;

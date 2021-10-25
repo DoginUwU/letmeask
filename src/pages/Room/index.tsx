@@ -1,5 +1,6 @@
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import useAuth from '../../hooks/useAuth';
@@ -15,12 +16,19 @@ import {
 import useRoom from '../../hooks/useRoom';
 import Question from '../../components/Question';
 import LikeIcon from '../../components/LikeIcon';
+import { PATHS } from '../../routes/paths';
 
 const Room: React.FC = () => {
   const { user } = useAuth();
-  const { room } = useRoom();
+  const { room, roomCode } = useRoom();
   const { createQuestion, addLike, removeLike, questions } = useQuestion();
   const [newQuestion, setNewQuestion] = useState('');
+  const history = useHistory();
+
+  useEffect(() => {
+    if (room.authorID && room.isOwned)
+      history.push(PATHS.rooms.rootAdmin.replace(':id', roomCode));
+  }, [history, room, roomCode]);
 
   const handleSendQuestion = useCallback(
     async (event: FormEvent) => {

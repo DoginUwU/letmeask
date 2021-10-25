@@ -1,7 +1,7 @@
 import { User } from './user';
 
 interface Question {
-  id?: string;
+  id: string;
   author: User;
   content: string;
   isAnswered: boolean;

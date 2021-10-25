@@ -73,11 +73,14 @@ const RoomProvider: React.FC = ({ children }) => {
 
     const roomRef = ref(database, `rooms/${roomCode}`);
     const unsubscribe = onValue(roomRef, databaseRoom => {
-      setRoom(databaseRoom.val());
+      setRoom({
+        ...databaseRoom.val(),
+        isOwned: databaseRoom.val().authorID === user.id,
+      });
     });
 
     return () => unsubscribe();
-  }, [roomCode]);
+  }, [roomCode, user]);
 
   return (
     <RoomContext.Provider

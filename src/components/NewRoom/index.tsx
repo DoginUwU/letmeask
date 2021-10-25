@@ -18,7 +18,7 @@ const NewRoom: React.FC = () => {
 
     try {
       const firebaseKey = await createRoom(newRoom);
-      history.push(PATHS.rooms.root.replace(':id', firebaseKey));
+      history.push(PATHS.rooms.rootAdmin.replace(':id', firebaseKey));
     } catch (err) {
       if (err instanceof Error) toast.error(err.message);
     }
