@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logoImg from '../../assets/images/logo.svg';
+import { PATHS } from '../../routes/paths';
 import Button from '../Button';
 
 import { Container } from './styles';
@@ -14,7 +16,8 @@ const NewRoom: React.FC = () => {
         <Button type="submit">Criar sala</Button>
       </form>
       <p>
-        Quer entrar em uma sala existente? <a href="./">Clique aqui</a>
+        Quer entrar em uma sala existente?{' '}
+        <Link to={PATHS.root}>Clique aqui</Link>
       </p>
     </Container>
   );

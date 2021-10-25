@@ -1,12 +1,13 @@
-import Home from './pages/Home';
+import { BrowserRouter } from 'react-router-dom';
+import { Router } from './routes/router';
 import { GlobalStyles } from './styles/globalStyles';
 
 const App: React.FC = () => {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyles />
-      <Home />
-    </>
+      <Router />
+    </BrowserRouter>
   );
 };
 

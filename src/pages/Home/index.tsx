@@ -1,10 +1,14 @@
 import illustrationImage from '../../assets/images/illustration.svg';
-// import Login from '../../components/Login';
+import Login from '../../components/Login';
 import NewRoom from '../../components/NewRoom';
 
 import { AsideContainer, Container, MainContainer } from './styles';
 
-const Home: React.FC = () => {
+interface HomeProps {
+  isCreateRoom?: boolean;
+}
+
+const Home: React.FC<HomeProps> = ({ isCreateRoom }: HomeProps) => {
   return (
     <Container>
       <AsideContainer>
@@ -12,9 +16,7 @@ const Home: React.FC = () => {
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as dúvidas da sua audiência em tempo-real</p>
       </AsideContainer>
-      <MainContainer>
-        <NewRoom />
-      </MainContainer>
+      <MainContainer>{isCreateRoom ? <NewRoom /> : <Login />}</MainContainer>
     </Container>
   );
 };
