@@ -17,6 +17,7 @@ import useRoom from '../../hooks/useRoom';
 import Question from '../../components/Question';
 import LikeIcon from '../../components/LikeIcon';
 import { PATHS } from '../../routes/paths';
+import EmptyContent from '../../components/EmptyContent';
 
 const Room: React.FC = () => {
   const { user, signIn } = useAuth();
@@ -125,6 +126,12 @@ const Room: React.FC = () => {
               </LikedButton>
             </Question>
           ))}
+          {questions.length === 0 && (
+            <EmptyContent
+              title="Nenhuma pergunta por aqui..."
+              description="Compartilhe sua dúvida aqui, temos certeza que tudo vai ser esclarecido!"
+            />
+          )}
         </QuestionList>
       </Content>
     </Container>

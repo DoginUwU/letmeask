@@ -7,6 +7,7 @@ import Button from '../Button';
 
 import { Container } from './styles';
 import useRoom from '../../hooks/useRoom';
+import Input from '../Input';
 
 const NewRoom: React.FC = () => {
   const { createRoom, loading } = useRoom();
@@ -33,8 +34,7 @@ const NewRoom: React.FC = () => {
       <img src={logoImg} alt="Logo letmeask" />
       <h2>Criar uma nova sala</h2>
       <form onSubmit={handleCreateRoom}>
-        <input
-          type="text"
+        <Input
           placeholder="Nome da sala"
           onChange={changeNewRoom}
           value={newRoom}

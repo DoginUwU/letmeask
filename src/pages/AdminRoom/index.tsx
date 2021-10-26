@@ -10,6 +10,7 @@ import Question from '../../components/Question';
 import deleteImg from '../../assets/images/delete.svg';
 import checkImg from '../../assets/images/check.svg';
 import answerImg from '../../assets/images/answer.svg';
+import EmptyContent from '../../components/EmptyContent';
 
 const AdminRoom: React.FC = () => {
   const { room } = useRoom();
@@ -86,6 +87,12 @@ const AdminRoom: React.FC = () => {
               </button>
             </Question>
           ))}
+          {questions.length === 0 && (
+            <EmptyContent
+              title="Nenhuma pergunta por aqui..."
+              description="Compartilhe seu código para ver a mágica acontecer!"
+            />
+          )}
         </QuestionList>
       </Content>
     </Container>

@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import logoImg from '../../assets/images/logo.svg';
 import googleIconImg from '../../assets/images/google-icon.svg';
 import Button from '../Button';
-
+import Input from '../Input';
 import { Container } from './styles';
 import useAuth from '../../hooks/useAuth';
 import { PATHS } from '../../routes/paths';
@@ -54,8 +54,7 @@ const Login: React.FC = () => {
       </Button>
       <div className="separator">ou entre em uma sala</div>
       <form onSubmit={handleJoinRoom}>
-        <input
-          type="text"
+        <Input
           placeholder="Digite o código da sala"
           onChange={hnadleCodeChange}
           value={roomCode}

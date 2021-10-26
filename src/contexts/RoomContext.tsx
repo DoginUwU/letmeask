@@ -46,7 +46,6 @@ const RoomProvider: React.FC = ({ children }) => {
   };
 
   const deleteRoom = useCallback(async () => {
-    setLoading(true);
     const roomRef = ref(database, `rooms/${roomCode}`);
     try {
       await update(roomRef, {
@@ -55,8 +54,6 @@ const RoomProvider: React.FC = ({ children }) => {
       });
     } catch (error) {
       throw new Error('Erro ao deletar sala.');
-    } finally {
-      setLoading(true);
     }
   }, [roomCode]);
 

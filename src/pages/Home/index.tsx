@@ -13,8 +13,8 @@ const Home: React.FC<HomeProps> = ({ isCreateRoom }: HomeProps) => {
     <Container>
       <AsideContainer>
         <img src={illustrationImage} alt="Illustration" />
-        <strong>Crie salas de jogos ao-vivo</strong>
-        <p>Tire as dúvidas do seu jogo em tempo-real</p>
+        <strong>Crie salas de dúvidas ao-vivo</strong>
+        <p>Tire as dúvidas das pessoas tempo-real</p>
       </AsideContainer>
       <MainContainer>{isCreateRoom ? <NewRoom /> : <Login />}</MainContainer>
     </Container>
