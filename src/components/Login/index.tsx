@@ -1,7 +1,6 @@
 import React, { FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import logoImg from '../../assets/images/logo.svg';
 import googleIconImg from '../../assets/images/google-icon.svg';
 import Button from '../Button';
 import Input from '../Input';
@@ -9,6 +8,7 @@ import { Container } from './styles';
 import useAuth from '../../hooks/useAuth';
 import { PATHS } from '../../routes/paths';
 import useRoom from '../../hooks/useRoom';
+import Logo from '../Logo';
 
 const Login: React.FC = () => {
   const history = useHistory();
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
 
   return (
     <Container>
-      <img src={logoImg} alt="Logo letmeask" />
+      <Logo />
       <Button
         className="create-room"
         icon={googleIconImg}

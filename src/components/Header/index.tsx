@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useHistory, useParams } from 'react-router-dom';
 import { BiExit } from 'react-icons/bi';
-import logoImg from '../../assets/images/logo.svg';
 import useRoom from '../../hooks/useRoom';
 import Button from '../Button';
 import RoomCode from '../RoomCode';
 import { Header as HeaderComponent } from './styles';
+import Logo from '../Logo';
 
 interface RouteParams {
   id?: string;
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
   return (
     <HeaderComponent>
       <div className="content">
-        <img src={logoImg} alt="letmeask" />
+        <Logo />
         <div>
           <RoomCode code={roomCode} />
           {room.isOwned && (

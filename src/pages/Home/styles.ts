@@ -19,7 +19,7 @@ const AsideContainer = styled.aside`
   flex: 7;
 
   background: #06f;
-  color: #fff;
+  color: ${({ theme }) => theme.backgroundSecondary};
 
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@ const AsideContainer = styled.aside`
     font-size: 24px;
     line-height: 36px;
     margin-top: 16px;
-    color: #f8f8f8;
+    color: ${({ theme }) => theme.background};
     font-weight: lighter;
   }
 

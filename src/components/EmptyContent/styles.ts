@@ -15,11 +15,11 @@ const Container = styled.div`
   }
 
   h3 {
-    color: #29292e;
+    color: ${({ theme }) => theme.text};
   }
 
   p {
-    color: #737380;
+    color: ${({ theme }) => theme.textSecondary};
   }
 `;
 

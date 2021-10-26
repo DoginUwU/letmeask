@@ -19,15 +19,15 @@ const Content = styled.main`
     h1 {
       font-family: 'Poppins', sans-serif;
       font-size: 24px;
-      color: #29292e;
+      color: ${({ theme }) => theme.text};
     }
 
     span {
       margin-left: 16px;
-      background: #e559f9;
+      background: ${({ theme }) => theme.pink};
       border-radius: 9999px;
       padding: 8px 16px;
-      color: #fff;
+      color: ${({ theme }) => theme.text};
       font-weight: 500;
       font-size: 14px;
     }
@@ -43,6 +43,8 @@ const Content = styled.main`
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
       resize: vertical;
       min-height: 180px;
+      background-color: ${({ theme }) => theme.backgroundTertiary};
+      color: ${({ theme }) => theme.text};
 
       &:focus {
         outline: 0;
@@ -94,7 +96,7 @@ const UserInfo = styled.div`
 
   span {
     margin-left: 8px;
-    color: #29292e;
+    color: ${({ theme }) => theme.text};
     font-weight: 500;
     font-size: 14px;
   }
@@ -109,11 +111,15 @@ const LikedButton = styled.button<LikedButtonProps>`
   align-items: flex-end;
   gap: 8px;
 
-  color: ${props => (props.liked ? '#06f' : '#737380')};
+  color: ${props =>
+    props.liked ? props.theme.primary : props.theme.textSecondary};
 
   svg path {
-    stroke: ${props => (props.liked ? '#FFF' : '#737380')};
-    fill: ${props => (props.liked ? '#06f' : 'transparent')};
+    stroke: ${props =>
+      props.liked
+        ? props.theme.backgroundSecondary
+        : props.theme.textSecondary};
+    fill: ${props => (props.liked ? props.theme.primary : 'transparent')};
   }
 `;
 

@@ -8,10 +8,6 @@ const Container = styled.div`
   width: 100%;
   max-width: 320px;
 
-  > img {
-    align-self: center;
-  }
-
   h2 {
     font-size: 24px;
     margin: 64px 0 24px;
@@ -27,11 +23,11 @@ const Container = styled.div`
 
   p {
     font-size: 14px;
-    color: #737380;
+    color: ${({ theme }) => theme.textSecondary};
     margin-top: 16px;
 
     a {
-      color: #e559f9;
+      color: ${({ theme }) => theme.pink};
     }
   }
 `;

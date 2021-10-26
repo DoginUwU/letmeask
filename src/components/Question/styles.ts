@@ -7,7 +7,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  background-color: #fefefe;
+  background-color: ${({ theme }) => theme.backgroundTertiary};
   border-radius: 8px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
   padding: 24px;
@@ -15,14 +15,14 @@ const Container = styled.div<ContainerProps>`
   ${props =>
     props.isAnswered &&
     css`
-      background-color: ${transparentize(0.9, '#06f')};
-      border: 1px solid #06f;
+      background-color: ${transparentize(0.9, props.theme.primary)};
+      border: 1px solid ${({ theme }) => theme.primary};
     `};
 
   ${props =>
     props.isHighlighted &&
     css`
-      background-color: #dbdcdd;
+      background-color: ${({ theme }) => theme.shadow1};
       border: 0;
     `};
 
@@ -31,7 +31,7 @@ const Container = styled.div<ContainerProps>`
   }
 
   p {
-    color: #29292e;
+    color: ${({ theme }) => theme.text};
   }
 
   footer {
@@ -69,7 +69,7 @@ const UserInfo = styled.div`
 
   span {
     margin-left: 8px;
-    color: #737380;
+    color: ${({ theme }) => theme.textSecondary};
     font-size: 14px;
   }
 `;

@@ -5,11 +5,12 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background 0.3s ease-in-out;
   }
 
   body {
-    background: #f8f8f8;
-    color: #29292e;
+    background: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.text};
   }
 
   body, input, button, textarea {

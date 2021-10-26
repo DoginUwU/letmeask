@@ -1,13 +1,13 @@
 import React, { FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import logoImg from '../../assets/images/logo.svg';
 import { PATHS } from '../../routes/paths';
 import Button from '../Button';
 
 import { Container } from './styles';
 import useRoom from '../../hooks/useRoom';
 import Input from '../Input';
+import Logo from '../Logo';
 
 const NewRoom: React.FC = () => {
   const { createRoom, loading } = useRoom();
@@ -31,7 +31,7 @@ const NewRoom: React.FC = () => {
 
   return (
     <Container>
-      <img src={logoImg} alt="Logo letmeask" />
+      <Logo />
       <h2>Criar uma nova sala</h2>
       <form onSubmit={handleCreateRoom}>
         <Input

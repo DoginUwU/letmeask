@@ -8,10 +8,6 @@ const Container = styled.div`
   width: 100%;
   max-width: 320px;
 
-  > img {
-    align-self: center;
-  }
-
   form {
     button {
       margin-top: 16px;
@@ -21,7 +17,7 @@ const Container = styled.div`
 
   .separator {
     font-size: 14px;
-    color: #a8a8b3;
+    color: ${({ theme }) => theme.shadow2};
 
     margin: 32px 0;
     display: flex;
@@ -31,7 +27,7 @@ const Container = styled.div`
       content: '';
       flex: 1;
       height: 1px;
-      background: #a8a8b3;
+      background: ${({ theme }) => theme.shadow2};
       margin-right: 16px;
     }
 
@@ -39,13 +35,13 @@ const Container = styled.div`
       content: '';
       flex: 1;
       height: 1px;
-      background: #a8a8b3;
+      background: ${({ theme }) => theme.shadow2};
       margin-left: 16px;
     }
   }
 
   .create-room {
-    background-color: #ea4335;
+    background-color: ${({ theme }) => theme.google};
     margin-top: 64px;
   }
 `;

@@ -19,13 +19,13 @@ const Container = styled.button<ContainerProps>`
   ${props =>
     props.isOutlined
       ? css`
-          border: 1px solid #06f;
+          border: 1px solid ${({ theme }) => theme.primary};
           background: transparent;
-          color: #06f;
+          color: ${({ theme }) => theme.primary};
         `
       : css`
           border: 0;
-          background: #06f;
+          background: ${({ theme }) => theme.primary};
           color: #fff;
         `}
 

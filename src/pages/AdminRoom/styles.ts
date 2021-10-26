@@ -15,15 +15,15 @@ const Content = styled.main`
     h1 {
       font-family: 'Poppins', sans-serif;
       font-size: 24px;
-      color: #29292e;
+      color: ${({ theme }) => theme.text};
     }
 
     span {
       margin-left: 16px;
-      background: #e559f9;
+      background: ${({ theme }) => theme.pink};
       border-radius: 9999px;
       padding: 8px 16px;
-      color: #fff;
+      color: ${({ theme }) => theme.text};
       font-weight: 500;
       font-size: 14px;
     }

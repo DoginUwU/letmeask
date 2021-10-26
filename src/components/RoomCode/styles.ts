@@ -5,19 +5,21 @@ const Button = styled.button`
   border-radius: 8px;
   overflow: hidden;
 
-  background-color: #fff;
-  border: 1px solid #06f;
+  background-color: ${({ theme }) => theme.backgroundSecondary};
+  border: 1px solid ${({ theme }) => theme.primary};
   cursor: pointer;
   display: flex;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: #06f;
-    color: #fff;
+    background-color: ${({ theme }) => theme.primary};
+    span {
+      color: ${({ theme }) => theme.backgroundSecondary};
+    }
   }
 
   div {
-    background: #06f;
+    background: ${({ theme }) => theme.primary};
     padding: 0 12px;
     display: flex;
     justify-content: center;
@@ -36,6 +38,7 @@ const Button = styled.button`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: ${({ theme }) => theme.text};
   }
 
   @media (max-width: 768px) {
