@@ -23,7 +23,7 @@ const Content = styled.main`
       background: ${({ theme }) => theme.pink};
       border-radius: 9999px;
       padding: 8px 16px;
-      color: ${({ theme }) => theme.text};
+      color: #fff;
       font-weight: 500;
       font-size: 14px;
     }
