@@ -14,7 +14,7 @@ const Button = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.primary};
     span {
-      color: ${({ theme }) => theme.backgroundSecondary};
+      color: #fff;
     }
   }
 

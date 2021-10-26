@@ -11,10 +11,12 @@ import { GlobalStyles } from './styles/globalStyles';
 import { darkTheme, lightTheme } from './styles/themes';
 
 const App: React.FC = () => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
   const handleThemeChange = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   return (
