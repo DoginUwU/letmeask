@@ -9,7 +9,7 @@ import { Container } from './styles';
 import useRoom from '../../hooks/useRoom';
 
 const NewRoom: React.FC = () => {
-  const { createRoom } = useRoom();
+  const { createRoom, loading } = useRoom();
   const history = useHistory();
   const [newRoom, setNewRoom] = React.useState('');
 
@@ -39,7 +39,9 @@ const NewRoom: React.FC = () => {
           onChange={changeNewRoom}
           value={newRoom}
         />
-        <Button type="submit">Criar sala</Button>
+        <Button type="submit" disabled={loading}>
+          Criar sala
+        </Button>
       </form>
       <p>
         Quer entrar em uma sala existente?{' '}

@@ -24,6 +24,18 @@ const Header = styled.header`
     button {
       height: 40px;
     }
+
+    @media (max-width: 768px) {
+      .logOut {
+        padding: 0 12px;
+        svg {
+          margin-right: 0;
+        }
+        p {
+          display: none;
+        }
+      }
+    }
   }
 `;
 

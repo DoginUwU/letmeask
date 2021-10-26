@@ -43,6 +43,10 @@ const Container = styled.button<ContainerProps>`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  svg {
+    margin-right: 8px;
+  }
 `;
 
 export { Container };

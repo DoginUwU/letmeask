@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useHistory, useParams } from 'react-router-dom';
+import { BiExit } from 'react-icons/bi';
 import logoImg from '../../assets/images/logo.svg';
 import useRoom from '../../hooks/useRoom';
 import Button from '../Button';
@@ -41,8 +42,9 @@ const Header: React.FC = () => {
         <div>
           <RoomCode code={roomCode} />
           {room.isOwned && (
-            <Button isOutlined onClick={handleEndRoom}>
-              Encerrar sala
+            <Button isOutlined onClick={handleEndRoom} className="logOut">
+              <BiExit size={25} />
+              <p>Encerrar sala</p>
             </Button>
           )}
         </div>

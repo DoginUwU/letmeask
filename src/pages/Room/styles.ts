@@ -49,6 +49,14 @@ const Content = styled.main`
       }
     }
   }
+
+  @media (max-width: 330px) {
+    .room-title {
+      span {
+        display: none;
+      }
+    }
+  }
 `;
 
 const FormFooter = styled.div`

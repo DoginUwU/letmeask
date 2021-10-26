@@ -12,6 +12,7 @@ interface RoomState {
   deleteRoom(): Promise<void>;
   roomCode: string;
   room: Room;
+  loading: boolean;
 }
 
 const RoomContext = createContext<RoomState>({} as RoomState);
@@ -20,9 +21,11 @@ const RoomProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
   const [roomCode, setRoomCode] = useState('');
   const [room, setRoom] = useState<Room>({} as Room);
+  const [loading, setLoading] = useState(false);
 
   const createRoom = async (roomName: string) => {
     if (!roomName.trim().length) throw new Error('Nome da sala é necessário.');
+    setLoading(true);
 
     const roomRef = ref(database, 'rooms');
 
@@ -33,6 +36,8 @@ const RoomProvider: React.FC = ({ children }) => {
 
     const code = firebaseRoom.key;
 
+    setLoading(false);
+
     if (!code) throw new Error('Erro ao criar sala.');
 
     setRoomCode(code);
@@ -41,6 +46,7 @@ const RoomProvider: React.FC = ({ children }) => {
   };
 
   const deleteRoom = useCallback(async () => {
+    setLoading(true);
     const roomRef = ref(database, `rooms/${roomCode}`);
     try {
       await update(roomRef, {
@@ -49,6 +55,8 @@ const RoomProvider: React.FC = ({ children }) => {
       });
     } catch (error) {
       throw new Error('Erro ao deletar sala.');
+    } finally {
+      setLoading(true);
     }
   }, [roomCode]);
 
@@ -84,7 +92,7 @@ const RoomProvider: React.FC = ({ children }) => {
 
   return (
     <RoomContext.Provider
-      value={{ createRoom, deleteRoom, joinRoom, roomCode, room }}
+      value={{ createRoom, deleteRoom, joinRoom, roomCode, room, loading }}
     >
       <QuestionProvider>{children}</QuestionProvider>
     </RoomContext.Provider>

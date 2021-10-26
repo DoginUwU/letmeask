@@ -13,6 +13,7 @@ interface QuestionState {
   checkQuestionAsAnswered(questionId: string): Promise<void>;
   highlightQuestion(questionId: string): Promise<void>;
   questions: Question[];
+  loading: boolean;
 }
 
 const QuestionContext = createContext<QuestionState>({} as QuestionState);
@@ -21,11 +22,13 @@ const QuestionProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
   const { roomCode, room } = useRoom();
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const createQuestion = async (questionLabel: string) => {
     if (!questionLabel.trim().length) throw new Error('Questão vazia.');
     if (!user.id) throw new Error('Não autenticado.');
     if (!roomCode) throw new Error('Não está em uma sala.');
+    setLoading(true);
 
     const question = {
       content: questionLabel,
@@ -39,18 +42,22 @@ const QuestionProvider: React.FC = ({ children }) => {
 
     const questionRef = ref(database, `rooms/${roomCode}/questions`);
     await push(questionRef, question);
+    setLoading(false);
   };
 
   const removeQuestion = async (questionId: string) => {
+    setLoading(true);
     const questionRef = ref(
       database,
       `rooms/${roomCode}/questions/${questionId}`,
     );
     await remove(questionRef);
+    setLoading(false);
   };
 
   const addLike = async (questionId: string) => {
     if (!user.id) throw new Error('Não autenticado.');
+    setLoading(true);
 
     const questionRef = ref(
       database,
@@ -59,20 +66,24 @@ const QuestionProvider: React.FC = ({ children }) => {
     await push(questionRef, {
       authorId: user.id,
     });
+    setLoading(false);
   };
 
   const removeLike = async (questionId: string, likeId: string) => {
     if (!user.id) throw new Error('Não autenticado.');
+    setLoading(true);
 
     const questionRef = ref(
       database,
       `rooms/${roomCode}/questions/${questionId}/likes/${likeId}`,
     );
     await remove(questionRef);
+    setLoading(false);
   };
 
   const checkQuestionAsAnswered = async (questionId: string) => {
     if (!user.id) throw new Error('Não autenticado.');
+    setLoading(true);
 
     const questionRef = ref(
       database,
@@ -82,10 +93,12 @@ const QuestionProvider: React.FC = ({ children }) => {
     await update(questionRef, {
       isAnswered: !databaseQuestion.val().isAnswered,
     });
+    setLoading(false);
   };
 
   const highlightQuestion = async (questionId: string) => {
     if (!user.id) throw new Error('Não autenticado.');
+    setLoading(true);
 
     const questionRef = ref(
       database,
@@ -95,6 +108,7 @@ const QuestionProvider: React.FC = ({ children }) => {
     await update(questionRef, {
       isHighlighted: !databaseQuestion.val().isHighlighted,
     });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -126,6 +140,7 @@ const QuestionProvider: React.FC = ({ children }) => {
         checkQuestionAsAnswered,
         highlightQuestion,
         questions,
+        loading,
       }}
     >
       {children}

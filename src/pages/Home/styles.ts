@@ -6,6 +6,15 @@ const Container = styled.div`
   height: 100vh;
 `;
 
+const MainContainer = styled.main`
+  flex: 8;
+  padding: 0 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const AsideContainer = styled.aside`
   flex: 7;
 
@@ -35,15 +44,10 @@ const AsideContainer = styled.aside`
     color: #f8f8f8;
     font-weight: lighter;
   }
-`;
 
-const MainContainer = styled.main`
-  flex: 8;
-  padding: 0 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @media (max-width: 830px) {
+    display: none;
+  }
 `;
 
 export { Container, AsideContainer, MainContainer };

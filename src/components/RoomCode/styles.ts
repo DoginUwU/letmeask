@@ -37,6 +37,12 @@ const Button = styled.button`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  @media (max-width: 768px) {
+    span {
+      display: none;
+    }
+  }
 `;
 
 export { Button };

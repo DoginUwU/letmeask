@@ -19,9 +19,10 @@ import LikeIcon from '../../components/LikeIcon';
 import { PATHS } from '../../routes/paths';
 
 const Room: React.FC = () => {
-  const { user } = useAuth();
+  const { user, signIn } = useAuth();
   const { room, roomCode } = useRoom();
-  const { createQuestion, addLike, removeLike, questions } = useQuestion();
+  const { createQuestion, addLike, removeLike, questions, loading } =
+    useQuestion();
   const [newQuestion, setNewQuestion] = useState('');
   const history = useHistory();
 
@@ -29,6 +30,14 @@ const Room: React.FC = () => {
     if (room.authorID && room.isOwned)
       history.push(PATHS.rooms.rootAdmin.replace(':id', roomCode));
   }, [history, room, roomCode]);
+
+  const handleLogin = useCallback(async () => {
+    try {
+      await signIn();
+    } catch (err) {
+      if (err instanceof Error) toast.error(err.message);
+    }
+  }, [signIn]);
 
   const handleSendQuestion = useCallback(
     async (event: FormEvent) => {
@@ -89,10 +98,12 @@ const Room: React.FC = () => {
             ) : (
               <span>
                 Para enviar uma pergunta,&nbsp;
-                <button type="button">faça seu login</button>
+                <button type="button" onClick={handleLogin}>
+                  faça seu login
+                </button>
               </span>
             )}
-            <Button type="submit" disabled={!user.id}>
+            <Button type="submit" disabled={loading || !user.id}>
               Enviar pergunta
             </Button>
           </FormFooter>
